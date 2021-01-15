@@ -33,7 +33,7 @@ namespace Junkosoft
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-			_targetDate = DateTime.Parse(ConfigurationSettings.AppSettings["TargetDate"]);
+			_targetDate = DateTime.Parse(ConfigurationManager.AppSettings["TargetDate"]);
 			//_targetDate = new DateTime(DateTime.Now.Year + 1, 1, 1, 0, 0, 0, 0);
 		}
 		#endregion
@@ -106,7 +106,7 @@ namespace Junkosoft
 		
 		private void Countdown_Load(object sender, EventArgs e)
 		{
-			DateLabel.Text = ConfigurationSettings.AppSettings["HeaderMessage"];
+			DateLabel.Text = ConfigurationManager.AppSettings["HeaderMessage"];
 			GetSeconds();
 		}
 
@@ -152,7 +152,7 @@ namespace Junkosoft
 			long secondsleft = datediff.Days * 86400 + datediff.Hours * 3600 + datediff.Minutes * 60 + datediff.Seconds + 1;
 			if (secondsleft > 0)
 			{
-				switch (ConfigurationSettings.AppSettings["Mode"])
+				switch (ConfigurationManager.AppSettings["Mode"])
 				{
 					case "seconds":
 						TimeLabel.Text = String.Format("{0:#,###}", secondsleft);
@@ -169,6 +169,11 @@ namespace Junkosoft
 							String.Format("{0:00}", datediff.Seconds);
 						timer1.Enabled = true;
 						break;
+					case "days":
+						TimeLabel.Text = String.Format("{0:#}", datediff.Days) + "d " + String.Format("{0:00}", datediff.Hours) +
+							":" + String.Format("{0:00}", datediff.Minutes) + ":" +	String.Format("{0:00}", datediff.Seconds);
+						timer1.Enabled = true;
+						break;
 					default:
 						throw new Exception("Invalid Mode specified in the configuration file.");
 				}
@@ -179,7 +184,7 @@ namespace Junkosoft
 				timer1.Enabled = false;
 				TimeLabel.Font = new Font(TimeLabel.Font.FontFamily.Name, 64);				
 				TimeLabel.ForeColor = Color.Yellow;				
-				TimeLabel.Text = ConfigurationSettings.AppSettings["TargetMessage"];
+				TimeLabel.Text = ConfigurationManager.AppSettings["TargetMessage"];
 			}
 		}
 		#endregion
